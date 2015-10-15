@@ -17,6 +17,9 @@ public class MainWindow extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_window);
+        LinearLayout ll = (LinearLayout) this.findViewById(R.id.mainLayout);
+        TableLayout innerLayout = new TableLayout(this);
+        ll.addView(innerLayout);
 
         Button buttons[][] = new Button[3][3];
         for (int i = 0; i < 3; i++) {
@@ -24,11 +27,21 @@ public class MainWindow extends ActionBarActivity {
             for (int j = 0; j < 3; j++) {
                 buttons[i][j] = new Button(this);
                 buttons[i][j].setText("-");
-                buttons[i][j].setWidth(10);
-                buttons[i][j].setHeight(10);
+                buttons[i][j].setWidth(30);
+                buttons[i][j].setHeight(30);
 
+                tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+                tr.addView(buttons[i][j]);
 
+                buttons[i][j].setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        // Perform action on click
+                        Button t = (Button) v;
+                        t.setText("0");
+                    }
+                });
             }
+            innerLayout.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
         }
     }
 
