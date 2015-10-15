@@ -13,6 +13,8 @@ import android.widget.TableRow;
 
 public class MainWindow extends ActionBarActivity {
 
+    int turn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +22,7 @@ public class MainWindow extends ActionBarActivity {
         LinearLayout ll = (LinearLayout) this.findViewById(R.id.mainLayout);
         TableLayout innerLayout = new TableLayout(this);
         ll.addView(innerLayout);
+        turn = 0;
 
         Button buttons[][] = new Button[3][3];
         for (int i = 0; i < 3; i++) {
@@ -35,10 +38,24 @@ public class MainWindow extends ActionBarActivity {
 
                 buttons[i][j].setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        // Perform action on click
                         Button t = (Button) v;
-                        t.setText("0");
+                        String currentText = t.getText().toString();
+                        t.setText(alternateDisplayedCharacter(currentText, turn));
+                        turn = (turn == 0) ? 1 : 0;
                     }
+
+                    private String alternateDisplayedCharacter(String currentText, int turn) {
+                        switch (currentText.charAt(0)) {
+                            case '-':
+                                if (turn == 0)
+                                    return "X";
+                                else
+                                    return "O";
+                            default:
+                                return currentText;
+                        }
+                    }
+
                 });
             }
             innerLayout.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
