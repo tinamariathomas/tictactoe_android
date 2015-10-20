@@ -2,6 +2,7 @@ package com.example.tinamt.tictactoe;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,7 @@ public class MainWindow extends ActionBarActivity {
                 buttons[i][j].setText("-");
                 buttons[i][j].setWidth(30);
                 buttons[i][j].setHeight(30);
+                buttons[i][j].setId(Integer.parseInt(Integer.toString(i + 1) + Integer.toString(j + 1)));
 
                 tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
                 tr.addView(buttons[i][j]);
@@ -39,9 +41,20 @@ public class MainWindow extends ActionBarActivity {
                 buttons[i][j].setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         Button t = (Button) v;
+                        Log.d("Grid:", Integer.toString(t.getId()));
+                        markBox(t);
+                        if (checkForWin(t)) {
+                            Log.d("Winning", "done");
+                            //Disable buttons
+                            //Display who has won
+                        }
+
+                        turn = (turn == 0) ? 1 : 0;
+                    }
+
+                    private void markBox(Button t) {
                         String currentText = t.getText().toString();
                         t.setText(alternateDisplayedCharacter(currentText, turn));
-                        turn = (turn == 0) ? 1 : 0;
                     }
 
                     private String alternateDisplayedCharacter(String currentText, int turn) {
@@ -60,8 +73,79 @@ public class MainWindow extends ActionBarActivity {
             }
             innerLayout.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
         }
+
     }
 
+    boolean checkForWin(Button t) {
+        String currentBoxID = Integer.toString(t.getId());//[i,j] of the clicked box
+        boolean horizontalLine = checkHorizontalLine(currentBoxID.charAt(0), currentBoxID.charAt(1));
+        boolean verticalLine = checkVerticalLine(currentBoxID.charAt(0), currentBoxID.charAt(1));
+        System.out.println("asdfad");
+        return horizontalLine || verticalLine || checkDiagonal(currentBoxID.charAt(0), currentBoxID.charAt(1));
+    }
+
+    private boolean checkHorizontalLine(char x, char y) {
+        int xInt = Integer.parseInt(String.valueOf(x));
+        int yInt = Integer.parseInt(String.valueOf(y));
+
+        String turnCharacter;
+        if (turn == 0) turnCharacter = "X";
+        else
+            turnCharacter = "O";
+        for (int i = 0; i < 3; i++) {
+            Button v = (Button) findViewById(Integer.parseInt(Integer.toString(xInt) + Integer.toString(i + 1)));
+            String text = (String) v.getText();
+            if (text != turnCharacter)
+                return false;
+        }
+        return true;
+    }
+
+    private boolean checkDiagonal(char x, char y) {
+        int xInt = Integer.parseInt(String.valueOf(x));
+        int yInt = Integer.parseInt(String.valueOf(y));
+        boolean val1=true,val2=true;
+        if (!(xInt == yInt || xInt + yInt == 4))
+            return false;
+        String turnCharacter;
+        if (turn == 0) turnCharacter = "X";
+        else
+            turnCharacter = "O";
+        for (int i = 0; i < 3; i++) {
+            Button v = (Button) findViewById(Integer.parseInt(Integer.toString(i + 1) + Integer.toString(i + 1)));
+            String text = (String) v.getText();
+            if (text != turnCharacter) {
+                val1 = false;
+                break;
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            Button v = (Button) findViewById(Integer.parseInt(Integer.toString(i + 1) + Integer.toString(3 - i)));
+            String text = (String) v.getText();
+            if (text != turnCharacter) {
+                val2 = false;
+                break;
+            }
+        }
+        return val1||val2;
+    }
+
+    private boolean checkVerticalLine(char x, char y) {
+        int xInt = Integer.parseInt(String.valueOf(x));
+        int yInt = Integer.parseInt(String.valueOf(y));
+
+        String turnCharacter;
+        if (turn == 0) turnCharacter = "X";
+        else
+            turnCharacter = "O";
+        for (int i = 0; i < 3; i++) {
+            Button v = (Button) findViewById(Integer.parseInt(Integer.toString(i + 1) + Integer.toString(yInt)));
+            String text = (String) v.getText();
+            if (text != turnCharacter)
+                return false;
+        }
+        return true;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
