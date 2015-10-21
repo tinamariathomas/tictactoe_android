@@ -15,6 +15,7 @@ import android.widget.TableRow;
 public class MainWindow extends ActionBarActivity {
 
     int turn;
+    String turnCharacter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class MainWindow extends ActionBarActivity {
         TableLayout innerLayout = new TableLayout(this);
         ll.addView(innerLayout);
         turn = 0;
+        turnCharacter="X";
 
         Button buttons[][] = new Button[3][3];
         for (int i = 0; i < 3; i++) {
@@ -49,7 +51,7 @@ public class MainWindow extends ActionBarActivity {
                             //Display who has won
                         }
 
-                        turn = (turn == 0) ? 1 : 0;
+                        toggleTurn();
                     }
 
                     private void markBox(Button t) {
@@ -76,6 +78,13 @@ public class MainWindow extends ActionBarActivity {
 
     }
 
+    private void toggleTurn() {
+
+        turn = (turn == 0) ? 1 : 0;
+        turnCharacter = (turnCharacter == "X") ? "O" : "X";
+
+    }
+
     boolean checkForWin(Button t) {
         String currentBoxID = Integer.toString(t.getId());//[i,j] of the clicked box
         boolean horizontalLine = checkHorizontalLine(currentBoxID.charAt(0), currentBoxID.charAt(1));
@@ -88,10 +97,7 @@ public class MainWindow extends ActionBarActivity {
         int xInt = Integer.parseInt(String.valueOf(x));
         int yInt = Integer.parseInt(String.valueOf(y));
 
-        String turnCharacter;
-        if (turn == 0) turnCharacter = "X";
-        else
-            turnCharacter = "O";
+
         for (int i = 0; i < 3; i++) {
             Button v = (Button) findViewById(Integer.parseInt(Integer.toString(xInt) + Integer.toString(i + 1)));
             String text = (String) v.getText();
@@ -107,10 +113,7 @@ public class MainWindow extends ActionBarActivity {
         boolean val1=true,val2=true;
         if (!(xInt == yInt || xInt + yInt == 4))
             return false;
-        String turnCharacter;
-        if (turn == 0) turnCharacter = "X";
-        else
-            turnCharacter = "O";
+
         for (int i = 0; i < 3; i++) {
             Button v = (Button) findViewById(Integer.parseInt(Integer.toString(i + 1) + Integer.toString(i + 1)));
             String text = (String) v.getText();
@@ -134,10 +137,6 @@ public class MainWindow extends ActionBarActivity {
         int xInt = Integer.parseInt(String.valueOf(x));
         int yInt = Integer.parseInt(String.valueOf(y));
 
-        String turnCharacter;
-        if (turn == 0) turnCharacter = "X";
-        else
-            turnCharacter = "O";
         for (int i = 0; i < 3; i++) {
             Button v = (Button) findViewById(Integer.parseInt(Integer.toString(i + 1) + Integer.toString(yInt)));
             String text = (String) v.getText();
