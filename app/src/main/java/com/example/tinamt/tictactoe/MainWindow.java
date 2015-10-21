@@ -56,20 +56,9 @@ public class MainWindow extends ActionBarActivity {
 
                     private void markBox(Button t) {
                         String currentText = t.getText().toString();
-                        t.setText(alternateDisplayedCharacter(currentText, turn));
+                        t.setText(turnCharacter);
                     }
 
-                    private String alternateDisplayedCharacter(String currentText, int turn) {
-                        switch (currentText.charAt(0)) {
-                            case '-':
-                                if (turn == 0)
-                                    return "X";
-                                else
-                                    return "O";
-                            default:
-                                return currentText;
-                        }
-                    }
 
                 });
             }
