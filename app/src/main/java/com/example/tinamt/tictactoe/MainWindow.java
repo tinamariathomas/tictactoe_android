@@ -49,7 +49,7 @@ public class MainWindow extends ActionBarActivity {
                         if (checkForWin(t)) {
                             Log.d("Winning", "done");
                             //Disable buttons
-                            disableAllButtons();
+                            changeClickableStatus(false);
                             //Display who has won
                         }
 
@@ -69,11 +69,11 @@ public class MainWindow extends ActionBarActivity {
 
     }
 
-    private void disableAllButtons() {
+    private void changeClickableStatus(boolean flag) {
         for (int i = 1; i <= 3; i++) {
             for (int j = 1; j <= 3; j++) {
                 Button t = (Button) findViewById(Integer.parseInt(Integer.toString(i) + Integer.toString(j)));
-                t.setClickable(false);
+                t.setClickable(flag);
             }
 
         }
@@ -145,6 +145,16 @@ public class MainWindow extends ActionBarActivity {
                 return false;
         }
         return true;
+    }
+
+    public void resetButtons(View v) {
+        changeClickableStatus(true);
+        for (int i = 1; i <= 3; i++) {
+            for (int j = 1; j <= 3; j++) {
+                Button t = (Button) findViewById(Integer.parseInt(Integer.toString(i) + Integer.toString(j)));
+                t.setText("-");
+            }
+        }
     }
 
     @Override
