@@ -25,7 +25,7 @@ public class MainWindow extends ActionBarActivity {
         TableLayout innerLayout = new TableLayout(this);
         ll.addView(innerLayout);
         turn = 0;
-        turnCharacter="X";
+        turnCharacter = "X";
 
         Button buttons[][] = new Button[3][3];
         for (int i = 0; i < 3; i++) {
@@ -45,9 +45,11 @@ public class MainWindow extends ActionBarActivity {
                         Button t = (Button) v;
                         Log.d("Grid:", Integer.toString(t.getId()));
                         markBox(t);
+                        t.setClickable(false);
                         if (checkForWin(t)) {
                             Log.d("Winning", "done");
                             //Disable buttons
+                            disableAllButtons();
                             //Display who has won
                         }
 
@@ -65,6 +67,16 @@ public class MainWindow extends ActionBarActivity {
             innerLayout.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
         }
 
+    }
+
+    private void disableAllButtons() {
+        for (int i = 1; i <= 3; i++) {
+            for (int j = 1; j <= 3; j++) {
+                Button t = (Button) findViewById(Integer.parseInt(Integer.toString(i) + Integer.toString(j)));
+                t.setClickable(false);
+            }
+
+        }
     }
 
     private void toggleTurn() {
@@ -99,7 +111,7 @@ public class MainWindow extends ActionBarActivity {
     private boolean checkDiagonal(char x, char y) {
         int xInt = Integer.parseInt(String.valueOf(x));
         int yInt = Integer.parseInt(String.valueOf(y));
-        boolean val1=true,val2=true;
+        boolean val1 = true, val2 = true;
         if (!(xInt == yInt || xInt + yInt == 4))
             return false;
 
@@ -119,7 +131,7 @@ public class MainWindow extends ActionBarActivity {
                 break;
             }
         }
-        return val1||val2;
+        return val1 || val2;
     }
 
     private boolean checkVerticalLine(char x, char y) {
